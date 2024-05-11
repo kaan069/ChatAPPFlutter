@@ -1,9 +1,14 @@
-import 'package:dev_muscle_chat_app/page/home.dart';
+import 'package:dev_muscle_chat_app/firebase_options.dart';
+import 'package:dev_muscle_chat_app/page/register.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main(){
-  
-  runApp(ChatApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const ChatApp());
 }
 
 class ChatApp extends StatelessWidget {
@@ -11,9 +16,8 @@ class ChatApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home:Login(),
-      
+    return const MaterialApp(
+      home: Register(),
     );
   }
 }

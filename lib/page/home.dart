@@ -1,19 +1,24 @@
-import 'package:cosmos/cosmos.dart';
+import 'package:cosmos/cosmos.dart' show CosmosBody, width;
+import 'package:dev_muscle_chat_app/services/get_chat.dart';
 import 'package:dev_muscle_chat_app/theme/color.dart';
 import 'package:dev_muscle_chat_app/variables/home.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<HomePage> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    getChatFun(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,10 +34,10 @@ class _LoginState extends State<Login> {
               children: [
                 Text(
                   "devMuscle",
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: textColor,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 Icon(
@@ -44,22 +49,18 @@ class _LoginState extends State<Login> {
             ),
           ),
           Expanded(
-              child: CosmosBody(
-            scrollDirection: Axis.vertical,
-            scrollable: true,
-            children: [
-              message(context, true),
-              message(context, false),
-              message(context, true),
-              message(context, false),
-              message(context, true),
-              message(context, true),
-              message(context, true),
-              message(context, true),
-            ],
+              child: ValueListenableBuilder(
+            valueListenable: messageList,
+            builder: (context, value, child) {
+              return CosmosBody(
+                scrollDirection: Axis.vertical,
+                scrollable: true,
+                children: value,
+              );
+            },
           )),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
             width: width(context),
             decoration: BoxDecoration(
                 color: cColor, borderRadius: BorderRadius.circular(5)),
@@ -116,56 +117,6 @@ class _LoginState extends State<Login> {
           )
         ],
       ),
-    );
-  }
-
-  Row message(BuildContext context, bool sender) {
-    return Row(
-      mainAxisAlignment:
-          sender ? MainAxisAlignment.start : MainAxisAlignment.end,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-          width: width(context) * 0.65,
-          decoration: BoxDecoration(
-            color: navColor,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "User Name",
-                style: TextStyle(
-                  color: textColor.withOpacity(0.7),
-                  fontSize: 12,
-                ),
-              ),
-              Text(
-                "Hello World",
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 14,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    "20:00",
-                    style: TextStyle(
-                      color: textColor.withOpacity(0.7),
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
